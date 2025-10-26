@@ -8,10 +8,8 @@ class JsonRepository:
         self._file_path = file_path
 
     def _recriar_item_de_dict(self, dados_item: dict) -> ItemColecao | None:
-        """Função auxiliar para converter um dicionário de volta em um objeto."""
         tipo = dados_item.pop("tipo", None)
-        
-        # Pega os valores base que não estão no construtor
+
         id_val = dados_item.pop('id')
         status_val = dados_item.pop('status')
         avaliacao_val = dados_item.pop('avaliacao')
@@ -19,14 +17,14 @@ class JsonRepository:
 
         item = None
         if tipo == "Filme":
-            item = Filme(**dados_item) # Passa 'titulo', 'ano', 'diretor'
+            item = Filme(**dados_item) 
         elif tipo == "Livro":
-            item = Livro(**dados_item) # Passa 'titulo', 'ano', 'autor'
+            item = Livro(**dados_item) 
         elif tipo == "Jogo":
-            item = Jogo(**dados_item) # Passa 'titulo', 'ano', 'desenvolvedora', 'plataforma'
+            item = Jogo(**dados_item) 
 
         if item:
-            # Restaura os valores que não são do construtor
+
             item._id = UUID(id_val)
             item._status = status_val
             item._avaliacao = avaliacao_val
@@ -34,7 +32,6 @@ class JsonRepository:
         return item
 
     def carregar(self) -> dict[UUID, ItemColecao]:
-        """Lê o arquivo JSON e retorna um dicionário de itens."""
         colecao = {}
         if not os.path.exists(self._file_path):
             print("\nArquivo de coleção não encontrado. Começando com um acervo vazio.")
@@ -56,9 +53,6 @@ class JsonRepository:
         return colecao
 
     def salvar(self, colecao: dict[UUID, ItemColecao]):
-        """Recebe o dicionário de itens e salva no arquivo JSON."""
-        
-        # Converte os valores do dicionário (objetos) em dicionários (JSON)
         dados_para_salvar = [item.to_dict() for item in colecao.values()]
         
         try:

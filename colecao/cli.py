@@ -1,8 +1,6 @@
 from .service import ColecaoService
 from .models import Filme, Livro, Jogo, ItemColecao
 
-# --- Funções Auxiliares de UI ---
-
 def _aguardar_enter():
     input("\nPressione ENTER para continuar...")
 
@@ -29,8 +27,6 @@ def _obter_input_int(prompt: str, min_val: int, max_val: int) -> int:
                 print(f"Valor fora do intervalo. Insira um número entre {min_val} e {max_val}.")
         except ValueError:
             print("Entrada inválida. Por favor, digite um número.")
-
-# --- Funções de Menu (recebem o service) ---
 
 def _menu_adicionar_filme(service: ColecaoService):
     print("\n-- Adicionar Novo Filme --")
@@ -107,8 +103,8 @@ def _menu_buscar(service: ColecaoService):
 
 def _menu_remover(service: ColecaoService):
     print("\n--- Remover Item ---")
-    id_str = input("Digite o ID (ou início do ID) do item a ser removido: ")
-    service.remover_item_por_id_str(id_str)
+    termo_busca = input("Digite o ID (ou Título exato) do item a ser removido: ")
+    service.remover_item(termo_busca)
 
 def _menu_atualizar_status(item: ItemColecao):
     print("\n-- Atualizar Status --")
@@ -122,11 +118,11 @@ def _menu_atualizar_status(item: ItemColecao):
 
 def _menu_atualizar_item(service: ColecaoService):
     print("\n--- Atualizar Item ---")
-    id_str = input("Digite o ID (ou início do ID) do item que deseja atualizar: ")
-    item = service.buscar_por_id_str(id_str)
+    termo_busca = input("Digite o ID (ou Título exato) do item que deseja atualizar: ")
+    item = service.buscar_item_por_id_ou_titulo(termo_busca)
 
     if not item:
-        print(f"Item com ID começando em '{id_str}' não encontrado.")
+        print(f"Item com ID ou Título '{termo_busca}' não encontrado.")
         return
 
     item.exibir_detalhes()
@@ -166,7 +162,7 @@ def imprimir_menu_principal():
 def start(service: ColecaoService):
     """Função principal que executa o loop do menu."""
     
-    _aguardar_enter() # Pausa após carregar
+    _aguardar_enter() 
 
     while True:
         imprimir_menu_principal()
@@ -190,7 +186,7 @@ def start(service: ColecaoService):
             service.listar_favoritos()
             _aguardar_enter()
         elif opcao == '0':
-            break # Sai do loop, o salvamento ocorrerá no main.py
+            break 
         else:
             print("Opção inválida. Tente novamente.")
             _aguardar_enter()

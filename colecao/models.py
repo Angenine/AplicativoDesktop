@@ -79,7 +79,6 @@ class ItemColecao(ABC):
     
     @abstractmethod
     def to_dict(self) -> dict:
-        """Método abstrato para forçar classes filhas a implementar a serialização."""
         pass
 
     def __str__(self) -> str:

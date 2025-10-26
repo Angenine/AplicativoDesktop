@@ -9,30 +9,38 @@ class ColecaoService:
         self._colecao: dict[UUID, ItemColecao] = {}
 
     def carregar_colecao(self):
-        """Carrega a coleção do repositório para a memória."""
         self._colecao = self._repository.carregar()
 
     def salvar_colecao(self):
-        """Salva a coleção da memória para o repositório."""
         self._repository.salvar(self._colecao)
 
     def adicionar_item(self, item: ItemColecao):
         self._colecao[item.get_id()] = item
         print(f"\nItem '{item.get_titulo()}' adicionado ao acervo.")
 
-    def remover_item_por_id_str(self, id_str: str) -> bool:
-        item_encontrado = self.buscar_por_id_str(id_str)
+    def buscar_item_por_id_ou_titulo(self, termo_busca: str) -> ItemColecao | None:
+        item_por_id = self.buscar_por_id_str(termo_busca)
+        if item_por_id:
+            return item_por_id
+
+        item_por_titulo = self.buscar_por_titulo(termo_busca)
+        if item_por_titulo:
+            return item_por_titulo
+        return None
+
+
+    def remover_item(self, termo_busca: str) -> bool:
+        item_encontrado = self.buscar_item_por_id_ou_titulo(termo_busca)
         
         if item_encontrado:
             item_removido = self._colecao.pop(item_encontrado.get_id())
             print(f"\nItem '{item_removido.get_titulo()}' removido.")
             return True
         
-        print(f"\nItem com ID começando em '{id_str}' não encontrado.")
+        print(f"\nItem com ID ou Título '{termo_busca}' não encontrado.")
         return False
 
     def buscar_por_id_str(self, id_str: str) -> ItemColecao | None:
-        """Busca usando a string do ID (completa ou parcial)."""
         if not id_str:
             return None
             
