@@ -51,26 +51,14 @@ O arquivo `main.py` na raiz do projeto é o **Ponto de Entrada**, responsável p
     ```bash
     cd /caminho/para/aplicativodesktop
     ```
-3.  (Opcional, mas recomendado) Crie e ative um ambiente virtual:
-
-    ```bash
-    # Criar
-    python -m venv .venv
-
-    # Ativar (Windows)
-    .\.venv\Scripts\activate
-
-    # Ativar (macOS/Linux)
-    source .venv/bin/activate
-    ```
-4.  Execute o ponto de entrada `main.py`:
+3.  Execute o ponto de entrada `main.py`:
 
     ```bash
     python main.py
     ```
 
     *(Se o comando acima não funcionar no Windows, tente `py main.py` ou `python3 main.py` no macOS/Linux)*
-5.  O menu interativo será iniciado no seu terminal.
+4..  O menu interativo será iniciado no seu terminal.
 
 ## 📁 Estrutura de Pastas
 

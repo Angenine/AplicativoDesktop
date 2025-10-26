@@ -36,6 +36,14 @@ class JsonRepository:
         if not os.path.exists(self._file_path):
             print("\nArquivo de coleção não encontrado. Começando com um acervo vazio.")
             return colecao
+        
+        try:
+            if os.path.getsize(self._file_path) == 0:
+                print(f"\nArquivo '{self._file_path}' encontrado, mas está vazio. Começando com acervo novo.")
+                return colecao
+        except OSError as e:
+            print(f"Erro ao verificar tamanho do arquivo: {e}")
+            return colecao 
 
         try:
             with open(self._file_path, 'r', encoding='utf-8') as f:
@@ -47,9 +55,12 @@ class JsonRepository:
                     colecao[item.get_id()] = item 
                     
             print(f"\nColeção carregada com sucesso de '{self._file_path}'!")
+
+        except json.JSONDecodeError as e:
+            print(f"\nErro ao ler o arquivo JSON (pode estar corrompido ou mal formatado): {e}")
+            print("Começando com um acervo vazio para esta sessão.")
         except Exception as e:
-            print(f"\nErro ao carregar a coleção: {e}")
-            
+            print(f"\nErro inesperado ao carregar a coleção: {e}")
         return colecao
 
     def salvar(self, colecao: dict[UUID, ItemColecao]):
