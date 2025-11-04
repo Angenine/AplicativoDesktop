@@ -72,7 +72,6 @@ class MySQLRepository:
         return dados
 
     def adicionar(self, item: ItemColecao):
-        """Adiciona um novo item ao banco de dados."""
         conn = self._get_connection()
         if not conn:
             return
