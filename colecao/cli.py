@@ -116,6 +116,8 @@ def _menu_atualizar_status(item: ItemColecao):
     novo_status = _obter_input_int("Digite o novo status: ", 0, 3)
     item.set_status(novo_status)
 
+# ... (mantenha todo o código acima desta função) ...
+
 def _menu_atualizar_item(service: ColecaoService):
     print("\n--- Atualizar Item ---")
     termo_busca = input("Digite o ID (ou Título exato) do item que deseja atualizar: ")
@@ -126,7 +128,8 @@ def _menu_atualizar_item(service: ColecaoService):
         return
 
     item.exibir_detalhes()
-    
+    houve_mudanca = False
+
     while True:
         print("\nO que deseja atualizar?")
         print(f"1: Mudar Status (Atual: {item.get_status()})")
@@ -138,16 +141,22 @@ def _menu_atualizar_item(service: ColecaoService):
 
         if opcao_atualizar == '1':
             _menu_atualizar_status(item)
+            houve_mudanca = True
         elif opcao_atualizar == '2':
             nova_avaliacao = _obter_input_int("Digite a nova avaliação (0 a 5): ", 0, 5)
             item.set_avaliacao(nova_avaliacao)
+            houve_mudanca = True
         elif opcao_atualizar == '3':
             item.marcar_favorito(not item.is_favorito())
+            houve_mudanca = True
         elif opcao_atualizar == '0':
+            if houve_mudanca:
+                service.atualizar_item(item)
             print(f"\nAtualizações de '{item.get_titulo()}' concluídas.")
             break
         else:
             print("Opção inválida.")
+
 
 def imprimir_menu_principal():
     print("\n--- Gerenciador de Coleção Pessoal ---")
